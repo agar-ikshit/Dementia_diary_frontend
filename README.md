@@ -1,6 +1,6 @@
 # React + Vite
-
-# deployement link : https://dementia-diary-frontend.vercel.app/
+# working link with backend and database connections 
+# https://dementia-diary-frontend.vercel.app/
 
 Currently, two official plugins are available:
 
