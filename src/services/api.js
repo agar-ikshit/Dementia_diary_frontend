@@ -1,4 +1,4 @@
-const API_BASE_URL = 'https://dementiadiarybackend-production.up.railway.app/api';
+const API_BASE_URL = 'http://dementiadiarybackend-production.up.railway.app/api';
 
 const getAuthHeader = () => {
   const token = localStorage.getItem('token');
