@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://dementiadiarybackend-production.up.railway.app/api';
+const API_BASE_URL = 'https://dementiadiarybackend-production.up.railway.app/api';
 
 const getAuthHeader = () => {
   const token = localStorage.getItem('token');
@@ -10,7 +10,7 @@ export const api = async (endpoint, method = 'GET', data = null) => {
     'Content-Type': 'application/json',
     ...getAuthHeader(),
   };
-  console.log("Headers being sent:", headers);
+  // console.log("Headers being sent:", headers);
 
   const config = {
     method,

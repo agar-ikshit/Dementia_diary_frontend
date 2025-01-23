@@ -3,7 +3,7 @@ import { api } from './api';
 export const authService = {
   login: async (credentials) => {
     const response = await api('/auth/login', 'POST', credentials);
-    console.log(response);
+    // console.log(response);
 
     let user = null; // Declare user variable outside the if block
 
@@ -20,7 +20,7 @@ export const authService = {
 
   signup: async (userData) => {
     const response = await api('/auth/signup', 'POST', userData);
-    console.log(response);
+    // console.log(response);
 
     if (response.token) {
       localStorage.setItem('token', response.token);
