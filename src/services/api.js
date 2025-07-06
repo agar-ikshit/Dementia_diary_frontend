@@ -1,4 +1,4 @@
-const API_BASE_URL = 'https://dementiadiarybackend-production.up.railway.app/api';
+const API_BASE_URL = 'https://dementia-diary-backend.onrender.com/api';
 
 const getAuthHeader = () => {
   const token = localStorage.getItem('token');
@@ -10,7 +10,6 @@ export const api = async (endpoint, method = 'GET', data = null) => {
     'Content-Type': 'application/json',
     ...getAuthHeader(),
   };
-  // console.log("Headers being sent:", headers);
 
   const config = {
     method,
@@ -22,16 +21,29 @@ export const api = async (endpoint, method = 'GET', data = null) => {
   }
 
   try {
+    console.log('📦 Sending request:', {
+      url: `${API_BASE_URL}${endpoint}`,
+      method,
+      headers,
+      body: data,
+    });
+
     const response = await fetch(`${API_BASE_URL}${endpoint}`, config);
 
+    console.log('✅ Raw response:', response.status, response.statusText);
+
+    // Try to parse response JSON anyway, even on error
+    const responseData = await response.json().catch(() => null);
+
     if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || 'Something went wrong');
+      console.error('❌ API error response:', responseData);
+      const message = responseData?.message || response.statusText || 'Unknown error';
+      throw new Error(message);
     }
 
-    return await response.json();
+    return responseData;
   } catch (error) {
-    console.error('API call failed:', error.message);
-    throw error; 
+    console.error('🚨 API call failed:', error.message);
+    throw error;
   }
 };

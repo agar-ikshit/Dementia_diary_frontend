@@ -1,35 +1,39 @@
 import { api } from './api';
 
 export const authService = {
-  login: async (credentials) => {
-    const response = await api('/auth/login', 'POST', credentials);
-    // console.log(response);
+ login: async (credentials) => {
+  const response = await api('/auth/login', 'POST', credentials);
+  console.log('Login response:', response);
 
-    let user = null; // Declare user variable outside the if block
+  let user = null;
+  if (response.token) {
+    localStorage.setItem('token', response.token);
+    user = { id: response.userId, email: response.email };
+    localStorage.setItem('userData', JSON.stringify(user));
+  } else {
+    throw new Error("Login failed: No token received");
+  }
 
-    if (response.token) {
-      localStorage.setItem('token', response.token);
-      user = { id: response.userId, email: response.email }; // Construct user object
-      localStorage.setItem('userData', JSON.stringify(user)); // Save user object, not response.user
-    } else {
-      throw new Error("Login failed: No token received");
-    }
+  return { user, token: response.token };
+},
 
-    return { user, token: response.token }; // Return user and token
-  },
 
-  signup: async (userData) => {
-    const response = await api('/auth/signup', 'POST', userData);
-    // console.log(response);
+signup: async (userData) => {
+  const response = await api('/auth/signup', 'POST', userData);
+  console.log('Signup response:', response);
 
-    if (response.token) {
-      localStorage.setItem('token', response.token);
-      const user = { id: response.userId, email: response.email };
-      localStorage.setItem('userData', JSON.stringify(user));
-    }
+  if (response.token) {
+    localStorage.setItem('token', response.token);
+    const user = { id: response.user.id, email: response.user.email };
+    localStorage.setItem('userData', JSON.stringify(user));
+  } else {
+    throw new Error("Signup failed: No token received");
+  }
 
-    return response;
-  },
+  return response;
+},
+
+
 
   logout: () => {
     localStorage.removeItem('token');

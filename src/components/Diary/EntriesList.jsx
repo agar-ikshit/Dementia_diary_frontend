@@ -22,18 +22,18 @@ const EntriesList = ({
           ) : (
             entries.map(entry => (
               <div
-                key={entry._id} // Use _id for MongoDB entries instead of id
+                key={entry.id} // ✅ use id, not _id
                 className="p-4 border rounded-lg hover:bg-gray-50 cursor-pointer"
                 onClick={() => onEdit(entry)}
               >
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-sm text-gray-600">
-                    {new Date(entry.createdAt).toLocaleDateString()} {/* Format the date */}
+                    {new Date(entry.createdAt).toLocaleDateString()}
                   </span>
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
-                      onDelete(entry._id); // Use _id for deleting entries
+                      onDelete(entry.id); // ✅ use id, not _id
                     }}
                     className="p-1 text-red-500 hover:bg-red-50 rounded"
                   >

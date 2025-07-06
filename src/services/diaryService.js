@@ -53,4 +53,23 @@ export const diaryService = {
       throw error;
     }
   },
+  
+//Search Diary entries by emotions
+  searchEntries: async (emotion) => {
+  try {
+    const query = new URLSearchParams({
+      emotion: emotion
+    }).toString();
+    console.log();
+
+    const response = await api(`/entries/search?${query}`);
+    return response;
+  } catch (error) {
+    console.error("Failed to search entries:", error);
+    throw error;
+  }
+},
 };
+
+
+

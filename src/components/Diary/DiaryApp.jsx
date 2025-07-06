@@ -3,6 +3,7 @@ import { diaryService } from '../../services/diaryService';
 import DiaryHeader from './DiaryHeader';
 import DiaryEditor from './DiaryEditor';
 import EntriesList from './EntriesList';
+import DiarySearch from './DiarySearch';
 
 const DiaryApp = () => {
   const [entries, setEntries] = useState([]);
@@ -126,6 +127,7 @@ const DiaryApp = () => {
           </div>
         </div>
       </div>
+    <DiarySearch onSelect={setCurrentEntry} />
     </div>
   );
 };
