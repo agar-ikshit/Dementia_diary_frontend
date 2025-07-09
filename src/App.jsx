@@ -59,6 +59,10 @@ const ProtectedApp = () => {
           <li>Later, search your past entries by emotion category (e.g., Positive days).</li>
         </ol>
 
+        <p className="mb-4 text-sm text-yellow-600 bg-yellow-100 p-2 rounded">
+  ⚠️ Please note: The first request might take a minute as the backend is hosted on Render and may need to wake up.
+</p>
+
         <p className="mb-4 text-gray-700">📦 Check out the source code:</p>
         <ul className="list-disc ml-6 mb-4 text-blue-600">
           <li>
