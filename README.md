@@ -108,4 +108,3 @@ This project is open source – feel free to use and build on it.
 Built with ❤️ by [@agar-ikshit](https://github.com/agar-ikshit)
 Helping people with dementia reflect on happier days.
 
-```
