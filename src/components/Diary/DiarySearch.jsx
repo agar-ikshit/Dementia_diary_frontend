@@ -2,24 +2,40 @@ import React, { useState } from 'react';
 import { Search } from 'lucide-react';
 import { diaryService } from '../../services/diaryService';
 
-const emotionOptions = [
-  "anger", "disgust", "fear", "happy", "joy", "neutral", "sad", "sadness", "shame", "surprise"
-];
+// Grouped categories
+const emotionGroups = {
+  Positive: ["happy", "joy", "surprise"],
+  Negative: ["sad", "sadness", "anger", "disgust", "shame", "fear"],
+  Neutral: ["neutral"]
+};
 
 const DiarySearch = ({ onSelect }) => {
-  const [emotionQuery, setEmotionQuery] = useState('');
+  const [category, setCategory] = useState('');
   const [filteredEntries, setFilteredEntries] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
   const handleSearch = async () => {
-    if (!emotionQuery) return;
+    if (!category) return;
     setLoading(true);
     setError('');
 
     try {
-      const results = await diaryService.searchEntries(emotionQuery);
-      setFilteredEntries(results);
+      // Get the list of emotions in this category
+      const emotions = emotionGroups[category];
+      let allResults = [];
+
+      // Make parallel requests for each emotion
+      const responses = await Promise.all(
+        emotions.map(emotion => diaryService.searchEntries(emotion))
+      );
+
+      // Merge all results into one array
+      responses.forEach(result => {
+        allResults = allResults.concat(result);
+      });
+
+      setFilteredEntries(allResults);
     } catch (err) {
       console.error(err);
       setError('Failed to search entries. Please try again.');
@@ -31,23 +47,23 @@ const DiarySearch = ({ onSelect }) => {
   return (
     <div className="bg-white p-6 rounded-lg shadow-sm mt-8 w-full">
       <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-        <Search size={20} /> Search by Emotion
+        <Search size={20} /> Search by Emotion Category
       </h2>
 
       <div className="flex items-center gap-4 mb-4">
         <select
-          value={emotionQuery}
-          onChange={(e) => setEmotionQuery(e.target.value)}
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
           className="flex-1 px-3 py-2 border rounded-md"
         >
-          <option value="">Select emotion</option>
-          {emotionOptions.map(emotion => (
-            <option key={emotion} value={emotion}>{emotion}</option>
+          <option value="">Select category</option>
+          {Object.keys(emotionGroups).map(group => (
+            <option key={group} value={group}>{group}</option>
           ))}
         </select>
         <button
           onClick={handleSearch}
-          disabled={loading || !emotionQuery}
+          disabled={loading || !category}
           className="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50"
         >
           <Search size={18} />
